@@ -239,5 +239,57 @@ class RenderReplyTests(unittest.TestCase):
         self.assertTrue(bot.render_reply(bot.SAMPLE, "summary"))
 
 
+class StartupFailureTests(unittest.TestCase):
+    """Starting the bot must explain itself instead of dumping a traceback."""
+
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.prefs_path = str(pathlib.Path(self.dir.name) / "p.json")
+        self.no_env = str(pathlib.Path(self.dir.name) / "absent.env")
+
+    def run_bot_capturing(self, side_effect):
+        import contextlib
+        import io
+
+        out = io.StringIO()
+        with mock.patch("urllib.request.urlopen", side_effect=side_effect):
+            with contextlib.redirect_stdout(out):
+                code = bot.run_bot(
+                    token="TOKEN", prefs_path=self.prefs_path, env_file=self.no_env
+                )
+        return code, out.getvalue()
+
+    def test_unreachable_api_is_explained(self):
+        code, output = self.run_bot_capturing(
+            urllib.error.URLError("Tunnel connection failed: 403 Forbidden")
+        )
+        self.assertEqual(code, 1)
+        self.assertIn("Could not reach", output)
+        self.assertIn("api.telegram.org", output)
+        self.assertNotIn("Traceback", output)
+
+    def test_bad_token_points_at_botfather(self):
+        def unauthorized(request, timeout=None):
+            raise urllib.error.HTTPError(
+                "url", 401, "Unauthorized", {},
+                io.BytesIO(b'{"description": "Unauthorized"}'),
+            )
+
+        code, output = self.run_bot_capturing(unauthorized)
+        self.assertEqual(code, 1)
+        self.assertIn("BotFather", output)
+
+    def test_unknown_style_is_rejected_before_connecting(self):
+        import contextlib
+        import io as _io
+
+        out = _io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = bot.run_bot(token="TOKEN", style="hieroglyphs", env_file=self.no_env)
+        self.assertEqual(code, 2)
+        self.assertIn("Unknown style", out.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()

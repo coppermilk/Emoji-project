@@ -116,10 +116,15 @@ class TranslateCommandTests(unittest.TestCase):
 
     def test_bot_without_a_token_exits_cleanly(self):
         import os
+        from unittest import mock
+
+        from emojimail import bot
 
         original = os.environ.pop("TELEGRAM_BOT_TOKEN", None)
         try:
-            with captured() as (out, _):
+            # Ignore any .env in the working tree: this test is about having
+            # no token from any source, not about the developer's setup.
+            with mock.patch.object(bot, "_load_dotenv"), captured() as (out, _):
                 code = cli.main(["bot"])
             self.assertEqual(code, 2)
             self.assertIn("BotFather", out.getvalue())

@@ -165,7 +165,7 @@ One rule worth knowing: an exact entry beats a stem, which is why `shipping` is
 python3 -m unittest discover -s tests -t . -v
 ```
 
-110 tests, no network, under a second.
+113 tests, no network, under a second.
 
 ## Project layout
 
@@ -177,7 +177,7 @@ emojimail/
   bot.py          Telegram long-polling bot (stdlib urllib)
   cli.py          command line front end
 samples/          example emails to try it on
-tests/            110 unit tests
+tests/            113 unit tests
 ```
 
 ## Limits, honestly

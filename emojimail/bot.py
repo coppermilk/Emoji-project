@@ -335,12 +335,12 @@ def _load_dotenv(path=".env"):
         os.environ.setdefault(key.strip(), value.strip().strip("'\""))
 
 
-def run_bot(token=None, style=None, prefs_path=None):
+def run_bot(token=None, style=None, prefs_path=None, env_file=".env"):
     """Entry point used by ``emojimail bot``. Returns a process exit code."""
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
     )
-    _load_dotenv()
+    _load_dotenv(env_file)
 
     token = token or os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     if not token:
@@ -374,5 +374,19 @@ def run_bot(token=None, style=None, prefs_path=None):
         return 0
     except TelegramError as exc:
         print(f"Telegram rejected the connection: {exc}")
+        if "401" in str(exc) or "unauthorized" in str(exc).lower():
+            print(
+                "That token is not valid. Get a fresh one with /token or /newbot "
+                "from @BotFather."
+            )
+        return 1
+    except (urllib.error.URLError, OSError) as exc:
+        # The startup getMe deliberately fails fast: once the bot is polling,
+        # run() retries network errors instead of exiting.
+        print(
+            f"Could not reach {API_ROOT}: {exc}\n"
+            "Check your connection, and whether a firewall or proxy is blocking "
+            "api.telegram.org."
+        )
         return 1
     return 0
