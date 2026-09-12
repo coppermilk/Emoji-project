@@ -1,0 +1,12 @@
+From: no-reply@mailhost.example
+To: bob@example.com
+Subject: Security alert: new login from an unrecognised device
+Date: Sat, 15 Mar 2025 23:02:44 +0000
+Content-Type: text/plain; charset="utf-8"
+
+We detected suspicious activity on your account.
+
+Someone signed in from a new device at 23:01. If this was not you, reset your
+password immediately and turn on two factor authentication.
+
+Do not share your password with anyone.

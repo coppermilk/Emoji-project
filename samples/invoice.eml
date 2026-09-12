@@ -1,0 +1,17 @@
+From: billing@acme-supplies.com
+To: bob@example.com
+Subject: URGENT: invoice 4471 is past due
+Date: Tue, 11 Mar 2025 09:14:02 +0000
+Content-Type: text/plain; charset="utf-8"
+
+Hi Bob,
+
+Your invoice for $1,240.00 is now 14 days past due. Please arrange payment
+by 03/11 or we will suspend the account.
+
+If there is a problem with the invoice, let me know and I will look into it.
+
+Thanks,
+Acme Billing
+-- 
+Acme Supplies Ltd

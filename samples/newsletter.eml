@@ -1,0 +1,21 @@
+From: deals@shopfast.example
+To: bob@example.com
+Subject: LAST CHANCE - 70% off everything!!
+Date: Fri, 29 Nov 2024 06:00:00 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="b1"
+
+--b1
+Content-Type: text/plain; charset="utf-8"
+
+Black friday sale ends tonight!
+
+Click here to claim your exclusive discount. Free shipping on every order
+over $50. Limited time only - hurry, this offer expires at midnight.
+
+Unsubscribe: https://shopfast.example/unsubscribe
+--b1
+Content-Type: text/html; charset="utf-8"
+
+<html><body><h1>LAST CHANCE</h1><p>70% off everything!</p></body></html>
+--b1--
