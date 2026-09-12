@@ -261,7 +261,10 @@ def summarize(parsed, topics=5):
         for match in find_matches(chunk):
             counts[match.emoji] += weight
     ranked = sorted(counts, key=lambda e: (-counts[e], e))
-    head.extend(e for e in ranked if e not in lexicon.SUMMARY_SKIP)
+    # Etiquette emoji are dropped only when something else survives: on a
+    # short "hello, how are you" the greeting IS the message.
+    topical = [e for e in ranked if e not in lexicon.SUMMARY_SKIP]
+    head.extend(topical if (topical or head) else ranked)
 
     # Signals go last so the line reads "what it is, then what it wants".
     tail = [
@@ -299,11 +302,18 @@ def render_full(text):
     """Emoji only. Line breaks survive; everything else becomes pictures."""
     lines = []
     for line in text.splitlines():
-        emoji = [m.emoji for m in find_matches(line)]
-        # Punctuation carries tone, so keep the shouting and the asking.
-        for mark in _SENTENCE_END_RE.findall(line):
-            emoji.append("❓" if mark == "?" else "❗")
-        rendered = "".join(_collapse_repeats(emoji))
+        pieces = [(match.start, match.emoji) for match in find_matches(line)]
+        # Punctuation carries tone, so keep the shouting and the asking -- at
+        # the position it was written, not swept to the end of the line.
+        for hit in _SENTENCE_END_RE.finditer(line):
+            pieces.append((hit.start(), "\u2753" if hit.group(0) == "?" else "\u2757"))
+        pieces.sort(key=lambda piece: piece[0])
+        # Collapse at emoji level: a lexicon entry may be several emoji long,
+        # so comparing whole entries would miss "\U0001F44B" against
+        # "\U0001F44B\U0001F91D".
+        rendered = "".join(
+            _collapse_repeats(_graphemes("".join(e for _, e in pieces)))
+        )
         if rendered:
             lines.append(rendered)
     return "\n".join(lines)

@@ -297,6 +297,173 @@ WORDS.update({
 })
 
 # --------------------------------------------------------------------------
+# Everyday language. The business vocabulary above handles mail from banks and
+# colleagues; this block handles how people actually write to each other.
+# --------------------------------------------------------------------------
+
+WORDS.update({
+    # Pronouns and question words. These are function words, but when the whole
+    # message becomes pictures they carry real meaning: "you" is not noise.
+    "i": "🙋", "me": "🙋", "my": "🙋", "mine": "🙋",
+    "you": "👉", "your": "👉", "yours": "👉",
+    "we": "👥", "us": "👥", "our": "👥",
+    "he": "👨", "him": "👨", "his": "👨",
+    "she": "👩", "her": "👩", "hers": "👩",
+    "they": "👥", "them": "👥", "their": "👥",
+    "how": "❓", "what": "❓", "why": "❓",
+    "who": "👤❓", "when": "🕐❓", "where": "📍❓",
+    "not": "🚫", "here": "📍", "there": "📍",
+    "again": "🔁",
+
+    # Everyday verbs
+    "go": "🚶", "come": "🚶", "see": "👀",
+    "look": "👀", "watch": "👀", "know": "🧠",
+    "think": "💭", "want": "🤲", "need": "🙏",
+    "like": "👍", "hate": "💔", "make": "🔨",
+    "take": "✋", "give": "🎁", "say": "💬",
+    "tell": "💬", "talk": "🗣️", "speak": "🗣️",
+    "ask": "❓", "work": "💼", "play": "🎮",
+    "eat": "🍽️", "drink": "🥤", "sleep": "😴",
+    "wake": "⏰", "walk": "🚶", "run": "🏃",
+    "drive": "🚗", "ride": "🚴", "buy": "🛒",
+    "sell": "🏷️", "pay": "💰", "read": "📖",
+    "write": "✍️", "learn": "📚", "study": "📚",
+    "wait": "⏳", "stop": "🛑", "open": "🔓",
+    "find": "🔍", "search": "🔍", "lose": "😞",
+    "win": "🏆", "feel": "💭", "live": "🏠",
+    "stay": "🏠", "leave": "🚪", "arrive": "🛬",
+    "meet": "🤝", "listen": "👂", "hear": "👂",
+    "sing": "🎤", "dance": "💃", "swim": "🏊",
+    "fly": "✈️", "cook": "🍳", "clean": "🧼",
+    "wash": "🚿", "break": "💥", "cut": "✂️",
+    "bring": "🎁", "keep": "🔒", "try": "💪",
+    "use": "🔧", "change": "🔄", "move": "📦",
+    "turn": "🔄", "show": "👁️", "hide": "🙈",
+    "wear": "👕", "grow": "🌱", "die": "💀",
+    "laugh": "😂", "cry": "😢", "smile": "😊",
+    "kiss": "💋", "hug": "🤗", "marry": "💒",
+    "remember": "🧠", "forget": "🤦", "believe": "🙏",
+    "worry": "😟", "enjoy": "😄", "rest": "😌",
+
+    # Animals
+    "bird": "🐦", "fish": "🐟", "horse": "🐴",
+    "cow": "🐮", "pig": "🐷", "sheep": "🐑",
+    "chicken": "🐔", "mouse": "🐭", "rabbit": "🐰",
+    "bear": "🐻", "lion": "🦁", "tiger": "🐯",
+    "elephant": "🐘", "monkey": "🐵", "snake": "🐍",
+    "frog": "🐸", "bee": "🐝", "butterfly": "🦋",
+    "spider": "🕷️", "duck": "🦆", "owl": "🦉",
+    "penguin": "🐧", "whale": "🐳", "dolphin": "🐬",
+    "shark": "🦈", "turtle": "🐢", "wolf": "🐺",
+    "fox": "🦊", "deer": "🦌", "crab": "🦀",
+    "snail": "🐌", "ant": "🐜", "animal": "🐾",
+    "pet": "🐾",
+
+    # Nature and weather
+    "tree": "🌳", "flower": "🌸", "grass": "🌿",
+    "leaf": "🍃", "plant": "🌱", "mountain": "⛰️",
+    "sea": "🌊", "ocean": "🌊", "river": "🏞️",
+    "lake": "🏞️", "beach": "🏖️", "forest": "🌲",
+    "sky": "🌌", "star": "⭐", "moon": "🌙",
+    "wind": "💨", "fire": "🔥", "water": "💧",
+    "earth": "🌍", "world": "🌍", "stone": "🪨",
+    "rock": "🪨", "sand": "🏖️", "ice": "🧊",
+    "storm": "⛈️", "rainbow": "🌈", "island": "🏝️",
+    "garden": "🌷",
+
+    # People and body
+    "man": "👨", "woman": "👩", "boy": "👦",
+    "girl": "👧", "child": "🧒", "kid": "🧒",
+    "people": "👥", "person": "👤", "mother": "👩",
+    "father": "👨", "mom": "👩", "dad": "👨",
+    "sister": "👧", "brother": "👦", "son": "👦",
+    "daughter": "👧", "wife": "👰", "husband": "🤵",
+    "hand": "✋", "eye": "👁️", "heart": "❤️",
+    "head": "🧠", "face": "😐", "hair": "💇",
+    "foot": "🦶", "leg": "🦵", "arm": "💪",
+    "ear": "👂", "nose": "👃", "mouth": "👄",
+    "tooth": "🦷", "brain": "🧠", "blood": "🩸",
+
+    # Food and drink
+    "bread": "🍞", "milk": "🥛", "cheese": "🧀",
+    "egg": "🥚", "meat": "🥩", "rice": "🍚",
+    "soup": "🍲", "salad": "🥗", "fruit": "🍎",
+    "apple": "🍎", "banana": "🍌", "orange": "🍊",
+    "grape": "🍇", "lemon": "🍋", "strawberry": "🍓",
+    "cake": "🍰", "cookie": "🍪", "chocolate": "🍫",
+    "candy": "🍬", "sugar": "🍬", "salt": "🧂",
+    "tea": "🍵", "juice": "🧃", "sandwich": "🥪",
+    "pizza": "🍕", "burger": "🍔", "pasta": "🍝",
+    "potato": "🥔", "tomato": "🍅", "carrot": "🥕",
+    "corn": "🌽", "honey": "🍯", "butter": "🧈",
+    "meal": "🍽️", "snack": "🍿",
+
+    # Qualities and feelings
+    "good": "👍", "bad": "👎", "great": "🌟",
+    "best": "🏆", "big": "🐘", "small": "🐜",
+    "hot": "🔥", "cold": "❄️", "warm": "🌡️",
+    "new": "✨", "old": "👴", "young": "👶",
+    "fast": "⚡", "slow": "🐌", "beautiful": "😍",
+    "pretty": "😍", "cute": "🥰", "strong": "💪",
+    "weak": "🤕", "rich": "💰", "easy": "😌",
+    "funny": "😂", "boring": "😑", "nice": "😊",
+    "smart": "🧠", "crazy": "🤪", "hungry": "🍽️",
+    "thirsty": "🥤", "afraid": "😨", "scared": "😨",
+    "surprised": "😲", "proud": "😌", "lonely": "🥺",
+    "safe": "🛡️", "quiet": "🤫", "loud": "📢",
+    "dirty": "💩", "empty": "🕳️", "ready": "✅",
+    "busy": "🏃", "true": "✅", "false": "❌",
+    "right": "✅", "wrong": "❌", "real": "💯",
+    "fun": "🎉", "sweet": "🍬",
+
+    # Places and things
+    "city": "🏙️", "town": "🏘️", "country": "🌍",
+    "street": "🛣️", "road": "🛣️", "shop": "🏪",
+    "store": "🏪", "market": "🏪", "church": "⛪",
+    "library": "📚", "park": "🌳", "zoo": "🦁",
+    "farm": "🚜", "room": "🚪", "kitchen": "🍳",
+    "door": "🚪", "window": "🪟", "table": "🪑",
+    "chair": "🪑", "bed": "🛏️", "phone": "📱",
+    "computer": "💻", "key": "🔑", "money": "💰",
+    "clock": "🕐", "bag": "🎒", "box": "📦",
+    "bottle": "🍶", "cup": "☕", "glass": "🥛",
+    "plate": "🍽️", "knife": "🔪", "spoon": "🥄",
+    "clothes": "👕", "shirt": "👕", "shoes": "👟",
+    "hat": "🎩", "dress": "👗", "bike": "🚲",
+    "bus": "🚌", "boat": "⛵", "rocket": "🚀",
+    "toy": "🧸", "ball": "⚽", "camera": "📷",
+    "light": "💡", "paper": "📄", "pen": "🖊️",
+    "pencil": "✏️", "color": "🎨", "art": "🎨",
+    "sport": "⚽", "song": "🎵", "story": "📖",
+    "word": "💬", "name": "🏷️", "life": "🌟",
+    "time": "⏱️", "way": "🛤️", "thing": "📦",
+    "place": "📍", "part": "🧩", "end": "🔚",
+})
+
+PHRASES.update({
+    "how do you do": "👋🤝",
+    "how are you": "👋😊❓",
+    "good morning": "☀️👋",
+    "good afternoon": "🌤️👋",
+    "good evening": "🌆👋",
+    "good night": "🌙😴",
+    "see you": "👋",
+    "take care": "🤗",
+    "my friend": "🤝",
+    "of course": "💯",
+    "no problem": "👌",
+    "never mind": "🤷",
+    "right now": "⏱️",
+    "i love you": "❤️",
+    "miss you": "🥺",
+    "good luck": "🍀",
+    "well done": "👏",
+    "by the way": "💬",
+    "i think": "💭",
+    "i know": "🧠",
+})
+
+# --------------------------------------------------------------------------
 # Topic signals used to build one-line summaries.
 # --------------------------------------------------------------------------
 
@@ -382,6 +549,10 @@ further once here there when where why how all any both each few more most
 other some what which who whom whose while during before after above below
 up down out off between against because until unless about
 """.split())
+
+# Any word we give an emoji to is no longer a stopword: pronouns and question
+# words earn their place once the whole message is rendered as pictures.
+STOPWORDS = frozenset(STOPWORDS) - set(WORDS)
 
 _MAX_PHRASE_WORDS = max(len(p.split()) for p in PHRASES)
 

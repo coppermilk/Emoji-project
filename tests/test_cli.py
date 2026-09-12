@@ -41,9 +41,9 @@ def captured(stdin=None):
 
 
 class ArgumentTests(unittest.TestCase):
-    def test_default_style_is_summary(self):
+    def test_default_style_is_full(self):
         args = cli.build_parser().parse_args(["translate"])
-        self.assertEqual(args.style, "summary")
+        self.assertEqual(args.style, "full")
 
     def test_style_is_validated(self):
         with captured(), self.assertRaises(SystemExit):

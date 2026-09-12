@@ -121,7 +121,7 @@ def build_parser():
         "paths", nargs="*", help="files or directories; omit to read stdin"
     )
     translate_parser.add_argument(
-        "-s", "--style", choices=STYLES, default="summary",
+        "-s", "--style", choices=STYLES, default="full",
         help="summary: one emoji line; inline: text plus emoji; full: emoji only",
     )
     translate_parser.add_argument("--json", action="store_true", help="machine-readable output")

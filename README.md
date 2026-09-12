@@ -9,7 +9,7 @@ Your invoice for $1,240.00 is 14 days past due. Please pay by 03/11.
 
                     ↓
 
-🧾⏰💸🚨💰📅📆🙋
+👉🧾💰📆⏰💸🙏💰📅
 ```
 
 **No API keys. No network calls in the translator. No dependencies.** The whole
@@ -35,9 +35,16 @@ Python 3.9 or newer. There is nothing to `pip install`.
 
 | Style | What you get | Good for |
 |---|---|---|
-| `summary` *(default)* | One line of emoji with the gist | Triaging an inbox at a glance |
+| `summary` | One line of emoji with the gist | Triaging an inbox at a glance |
 | `inline` | The original text with emoji added beside each word | Reading it and still understanding it |
-| `full` | Emoji only, every word gone | Chaos |
+| `full` *(default)* | Every word it knows, as emoji, in order | What the bot replies with |
+
+Conversational text works the same way:
+
+```
+hello, how do you do, my bird          →  👋🤝🙋🐦
+are you free tomorrow? let's go swim   →  👉🆓🌅❓🚶🏊
+```
 
 ```bash
 python3 -m emojimail translate samples/invoice.eml --style summary
@@ -47,8 +54,8 @@ python3 -m emojimail translate samples/invoice.eml --style full
 
 ```
 summary  🧾⏰💸🚨💰⏱️⚠️🙋
-inline   Your invoice 🧾 for $1,240.00 💰 is now ⏱️ 14 days 📆 past due ⏰💸. Please 🙏 arrange payment 💰
-full     🧾💰⏱️📆⏰💸🙏💰
+inline   Your 👉 invoice 🧾 for $1,240.00 💰 is now ⏱️ 14 days 📆 past due ⏰💸. Please 🙏 arrange payment 💰
+full     👉🧾💰⏱️📆⏰💸🙏💰
 ```
 
 ### How a summary is built
@@ -152,7 +159,9 @@ PHRASES = {
 }
 ```
 
-Add an entry, and it works everywhere — all three styles and the bot. The tests
+There are 689 words and 109 phrases today, covering both business mail
+and ordinary conversation. Add an entry and it works everywhere — all three styles
+and the bot. The tests
 enforce the rules that keep the tables sane (keys lowercase, phrases actually
 multi-word, no ASCII letters leaking into the emoji, no stopword collisions).
 
@@ -165,7 +174,7 @@ One rule worth knowing: an exact entry beats a stem, which is why `shipping` is
 python3 -m unittest discover -s tests -t . -v
 ```
 
-113 tests, no network, under a second.
+116 tests, no network, under a second.
 
 ## Project layout
 
@@ -177,7 +186,7 @@ emojimail/
   bot.py          Telegram long-polling bot (stdlib urllib)
   cli.py          command line front end
 samples/          example emails to try it on
-tests/            113 unit tests
+tests/            116 unit tests
 ```
 
 ## Limits, honestly
@@ -186,4 +195,6 @@ tests/            113 unit tests
   context or anything outside `lexicon.py`, and coverage on an unusual mail can
   be low. The upside is that it is instant, free, private and deterministic.
 - English only.
-- `full` style is genuinely unreadable. That is the point of it.
+- `full` is a word-by-word substitution, not a paraphrase. Word order and
+  repetition survive, so a long mail becomes a long emoji string.
+- Anything outside `lexicon.py` is simply dropped rather than guessed at.

@@ -27,12 +27,20 @@ class ReadmeTests(unittest.TestCase):
     def test_readme_exists(self):
         self.assertTrue(self.text.strip())
 
-    def test_quoted_invoice_summary_is_current(self):
-        summary = translate(
-            "Subject: URGENT: invoice 4471 is past due\n\n"
-            "Your invoice for $1,240.00 is 14 days past due. Please pay by 03/11."
-        ).summary
-        self.assertIn(summary, self.text, f"README is stale; current summary is {summary}")
+    HEADER_EXAMPLE = (
+        "Subject: URGENT: invoice 4471 is past due\n\n"
+        "Your invoice for $1,240.00 is 14 days past due. Please pay by 03/11."
+    )
+
+    def test_header_example_is_current(self):
+        # The banner at the top shows a `full` translation, the default style.
+        body = translate(self.HEADER_EXAMPLE, "full").body.splitlines()[0]
+        self.assertIn(body, self.text, f"README banner is stale; it should be {body}")
+
+    def test_style_block_summary_is_current(self):
+        sample = (self.readme.parent / "samples" / "invoice.eml").read_bytes()
+        summary = translate(sample, "summary").summary
+        self.assertIn(summary, self.text, f"README is stale; summary is {summary}")
 
     def test_documented_styles_match_the_code(self):
         for style in STYLES:

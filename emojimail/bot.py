@@ -43,9 +43,9 @@ Commands:
 /help - this message
 
 Styles:
- summary - one line of emoji with the gist (default)
+ full - emoji only, the whole message as pictures (default)
  inline - the original text with emoji added
- full - emoji only, no words at all
+ summary - one line of emoji with the gist
 """
 
 SAMPLE = """\
@@ -134,7 +134,7 @@ def chunked(text, size=MAX_MESSAGE):
 class Preferences:
     """Per-chat style choices, persisted as a small JSON file."""
 
-    def __init__(self, path, default="summary"):
+    def __init__(self, path, default="full"):
         self.path = pathlib.Path(path)
         self.default = default
         self._styles = {}
@@ -169,24 +169,17 @@ class Preferences:
 
 
 def render_reply(raw, style):
-    """Translate ``raw`` and format it the way the bot should say it."""
+    """Translate ``raw`` into the emoji the bot should send back."""
     parsed = parse(raw)
     if not parsed.text.strip():
-        return "That looked empty \U0001F937 send me some email text or a .eml file."
+        return "That looked empty \U0001F937 send me some text or a .eml file."
 
     result = translate_email(parsed, style=style)
-    lines = [result.summary]
-    if style != "summary":
-        if result.subject:
-            lines.append("")
-            lines.append(result.subject)
-        if result.body:
-            lines.append("")
-            lines.append(result.body)
-    if result.total:
-        lines.append("")
-        lines.append(f"─ {result.coverage:.0%} of words mapped · {style}")
-    return "\n".join(lines)
+    if style == "summary":
+        return result.summary
+    # Emoji and nothing else: no stats, no labels, no commentary.
+    parts = [part for part in (result.subject, result.body) if part.strip()]
+    return "\n".join(parts) or result.summary
 
 
 class Bot:
@@ -351,7 +344,7 @@ def run_bot(token=None, style=None, prefs_path=None, env_file=".env"):
         )
         return 2
 
-    default_style = style or os.environ.get("EMOJIMAIL_STYLE", "summary")
+    default_style = style or os.environ.get("EMOJIMAIL_STYLE", "full")
     if default_style not in STYLES:
         print(f"Unknown style {default_style!r}; expected one of {', '.join(STYLES)}")
         return 2

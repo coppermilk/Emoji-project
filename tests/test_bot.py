@@ -9,6 +9,7 @@ import urllib.error
 from unittest import mock
 
 from emojimail import bot
+from emojimail.translate import FALLBACK
 
 
 class FakeResponse(io.BytesIO):
@@ -111,8 +112,8 @@ class PreferencesTests(unittest.TestCase):
         self.addCleanup(self.dir.cleanup)
 
     def test_default_when_unset(self):
-        prefs = bot.Preferences(self.path, default="summary")
-        self.assertEqual(prefs.style_for(42), "summary")
+        prefs = bot.Preferences(self.path, default="full")
+        self.assertEqual(prefs.style_for(42), "full")
 
     def test_set_and_persist(self):
         bot.Preferences(self.path).set_style(42, "full")
@@ -125,11 +126,11 @@ class PreferencesTests(unittest.TestCase):
 
     def test_corrupt_file_falls_back_to_defaults(self):
         self.path.write_text("{not json", encoding="utf-8")
-        self.assertEqual(bot.Preferences(self.path).style_for(1), "summary")
+        self.assertEqual(bot.Preferences(self.path).style_for(1), "full")
 
     def test_missing_file_is_fine(self):
         missing = pathlib.Path(self.dir.name) / "nope" / "prefs.json"
-        self.assertEqual(bot.Preferences(missing).style_for(1), "summary")
+        self.assertEqual(bot.Preferences(missing).style_for(1), "full")
 
 
 class HandlerTests(unittest.TestCase):
@@ -168,7 +169,7 @@ class HandlerTests(unittest.TestCase):
     def test_style_command_rejects_nonsense(self):
         transport = self.run_message(self.text_message("/style hieroglyphs"))
         self.assertIn("Unknown style", transport.sent()[0])
-        self.assertEqual(self.prefs.style_for(7), "summary")
+        self.assertEqual(self.prefs.style_for(7), "full")
 
     def test_bare_style_command_reports_current(self):
         transport = self.run_message(self.text_message("/style"))
@@ -225,9 +226,26 @@ class HandlerTests(unittest.TestCase):
 
 
 class RenderReplyTests(unittest.TestCase):
-    def test_summary_reply_mentions_coverage(self):
-        reply = bot.render_reply("Subject: Invoice\n\nPay the bill.", "summary")
-        self.assertIn("mapped", reply)
+    def test_reply_carries_no_stats_or_labels(self):
+        for style in ("full", "inline", "summary"):
+            with self.subTest(style=style):
+                reply = bot.render_reply("Subject: Invoice\n\nPay the bill.", style)
+                for noise in ("mapped", "%", "style", "summary", "\u2500"):
+                    self.assertNotIn(noise, reply)
+
+    def test_reply_to_a_greeting_is_not_the_fallback(self):
+        # Regression: etiquette emoji were skipped when ranking topics, so a
+        # message that was ONLY a greeting summarised to the shrug fallback.
+        for style in ("full", "summary"):
+            with self.subTest(style=style):
+                reply = bot.render_reply("hello, how do you do, my bird", style)
+                self.assertNotEqual(reply, FALLBACK)
+                self.assertIn("\U0001F44B", reply)
+
+    def test_full_reply_is_emoji_only(self):
+        reply = bot.render_reply("hello, how do you do, my bird", "full")
+        self.assertFalse(any(ch.isascii() and ch.isalpha() for ch in reply))
+        self.assertIn("\U0001F426", reply)  # bird
 
     def test_inline_reply_keeps_the_words(self):
         self.assertIn("invoice", bot.render_reply("the invoice is due", "inline"))
